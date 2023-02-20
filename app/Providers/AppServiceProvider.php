@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Notifications\OrderCreatedNotification;
 use App\Repositories\Contracts\ImageRepositoryContract;
 use App\Repositories\Contracts\OrderRepositoryContract;
 use App\Repositories\Contracts\ProductRepositoryContract;

@@ -11,7 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class OrderCreatedJob implements ShouldQueue, ShouldBeUnique
+class OrderCreatedJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -33,6 +33,6 @@ class OrderCreatedJob implements ShouldQueue, ShouldBeUnique
     public function handle()
     {
         logs()->info(self::class);
-        $this->order->notify(new OrderCreatedNotification());
+        $this->order->notify(app()->make(OrderCreatedNotification::class));
     }
 }
