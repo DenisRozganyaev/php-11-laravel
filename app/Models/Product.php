@@ -6,6 +6,7 @@ use App\Services\FileStorageService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Kyslik\ColumnSortable\Sortable;
 use willvincent\Rateable\Rateable;
@@ -72,9 +73,16 @@ class Product extends Model
     public function thumbnailUrl(): Attribute
     {
         return Attribute::make(
-            get: fn () => Storage::exists($this->attributes['thumbnail'])
-                ? Storage::url($this->attributes['thumbnail'])
-                : $this->attributes['thumbnail']
+            get: function() {
+                $key = "products.thumbnail.{$this->attributes['thumbnail']}";
+                if (!Cache::has($key)) {
+                    $link = Storage::temporaryUrl($this->attributes['thumbnail'], now()->addMinutes(10));
+                    Cache::put($key, $link, 570);
+                    return $link;
+                }
+
+                return Cache::get($key);
+            }
         );
     }
 
