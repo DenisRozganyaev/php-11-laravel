@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CreateProductRequest;
+use App\Http\Requests\Admin\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use App\Repositories\Contracts\ProductRepositoryContract;
@@ -66,13 +67,16 @@ class ProductsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param UpdateProductRequest $request
+     * @param Product $product
+     * @param ProductRepositoryContract $repository
+     * @return \Illuminate\Http\RedirectResponse|void
      */
-    public function update(Request $request, $id)
+    public function update(UpdateProductRequest $request, Product $product, ProductRepositoryContract $repository)
     {
-        //
+        return $repository->update($product, $request) ?
+            redirect()->route('admin.products.edit', $product) :
+            redirect()->back()->withInput();
     }
 
     /**
