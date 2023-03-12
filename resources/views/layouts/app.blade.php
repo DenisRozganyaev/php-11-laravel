@@ -12,6 +12,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/iziToast.css') }}">
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -30,12 +31,25 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('products.index') }}">{{ __('Products') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('categories.index') }}">{{ __('Categories') }}</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
+                        <li class="nav-item">
+                            <a href="{{ route('cart.index') }}" class="nav-link">
+                                {{ __('Cart') }}
+                                @if (Cart::instance('cart')->count() > 0)
+                                    ({{ Cart::instance('cart')->content()->count() }})
+                                @endif
+                            </a>
+                        </li>
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
@@ -55,6 +69,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('account.index') }}">{{ __('Account') }}</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -76,5 +91,8 @@
             @yield('content')
         </main>
     </div>
+    <script src="{{ asset('js/iziToast.js') }}"></script>
+@include('vendor.lara-izitoast.toast')
+@stack('footer-scripts')
 </body>
 </html>
