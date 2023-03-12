@@ -18,7 +18,6 @@
                         <th>Total</th>
                     </tr>
                     </thead>
-
                     <tbody>
                         @foreach($order->products as $product)
                             <tr>
