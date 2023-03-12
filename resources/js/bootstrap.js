@@ -22,28 +22,6 @@ window.$ = $;
  * for events that are broadcast by Laravel. Echo and event broadcasting
  * allows your team to easily build robust real-time web applications.
  */
-import Echo from 'laravel-echo';
-import Pusher from 'pusher-js';
-
-window.Pusher = Pusher;
-
-window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: import.meta.env.VITE_PUSHER_APP_KEY,
-    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
-    forceTLS: false,
-});
-
-window.Echo.private(`App.Models.User.${window.userID}`)
-    .listen('WishListProductUpdatedEvent', (e) => {
-        let template = `${e.message} <br> <a href="/products/${e.product.id}">Look</a>`
-        iziToast.success({
-            title: 'WishList Notification',
-            message: template,
-            position: 'topRight',
-        })
-    });
-
 
 // import Echo from 'laravel-echo';
 
